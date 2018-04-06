@@ -1,3 +1,53 @@
+class IndexedPages() extends Seq[Page] with Weighted[Page] {
+    var iPages: Seq[Page] = Seq[Page]()
+
+    def add(p: Page) = {
+        if(!iPages.contains(p)){
+            iPages = iPages :+ p
+        }
+    }
+
+    def score(iPages: Seq[Page]): Seq[Double] = {
+        iPages.map(_.url.length.toDouble)
+    }
+
+    def search(qry: Query): SearchResults = {
+        //class SearchResults(val query: Query, val numIndexedPages:Int, val urls: Seq[String], val scores: Seq[Double]) 
+        val sch = new SearchResults(qry, 0, iPages.map(_.url), score(iPages))
+        sch
+    }
+
+    def index_=(ps: Seq[Page]): Unit = {
+
+    }
+    // Members declared in scala.collection.IterableLike
+    def iterator(): Iterator[Page] = {
+        iPages.iterator
+    }
+    // Members declared in scala.collection.SeqLike
+    def apply(idx: Int): Page = {
+        iPages(idx)
+    }
+    def length: Int = {
+        iPages.length
+    }
+    // Members declared in Weighted
+    def getItems(): Seq[Page] = {
+        iPages
+    }
+    def getWeights: Seq[Double] = {
+        iPages.map(_.url.length.toDouble)
+    }
+}
+
+class Query(strs: Seq[String]) extends Weighted[String] {
+    def getItems(): Seq[String] = {
+        strs
+    }
+    def getWeights(): Seq[Double] = {
+        strs.map(_.length.toDouble)
+    }
+}
 
 object MainNoActors {
   def main(args: Array[String]) = {

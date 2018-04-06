@@ -1,15 +1,4 @@
-[0m[[0m[31merror[0m] [0m[0mC:\Users\toneydr1\Documents\Spring 2018\COMP 443\Code\Project3\Code\MainNoActors.scala:4:21: not found: type IndexedPages[0m
-[0m[[0m[31merror[0m] [0m[0m    val index = new IndexedPages()[0m
-[0m[[0m[31merror[0m] [0m[0m                    ^[0m
-[0m[[0m[31merror[0m] [0m[0mC:\Users\toneydr1\Documents\Spring 2018\COMP 443\Code\Project3\Code\MainNoActors.scala:20:28: not found: type IndexedPages[0m
-[0m[[0m[31merror[0m] [0m[0m  def addTop50Pages(index: IndexedPages) = {[0m
-[0m[[0m[31merror[0m] [0m[0m                           ^[0m
-[0m[[0m[31merror[0m] [0m[0mC:\Users\toneydr1\Documents\Spring 2018\COMP 443\Code\Project3\Code\MainNoActors.scala:10:64: not found: type Query[0m
-[0m[[0m[31merror[0m] [0m[0m                          Vector("watch", "movies") ).map{ new Query(_) }[0m
-[0m[[0m[31merror[0m] [0m[0m                                                               ^[0m
-[0m[[0m[31merror[0m] [0m[0mC:\Users\toneydr1\Documents\Spring 2018\COMP 443\Code\Project3\Code\Prompter.scala:13:22: not found: type Query[0m
-[0m[[0m[31merror[0m] [0m[0m      val qObj = new Query(if(q.trim.length == 0) Nil else q.trim.split("(_|\\W)+").map(_.toLowerCase))[0m
-[0m[[0m[31merror[0m] [0m[0m                     ^[0m
-[0m[[0m[31merror[0m] [0m[0mC:\Users\toneydr1\Documents\Spring 2018\COMP 443\Code\Project3\Code\Prompter.scala:25:17: not found: type StartPrompting[0m
-[0m[[0m[31merror[0m] [0m[0m    case start: StartPrompting => startQuery(sender)[0m
-[0m[[0m[31merror[0m] [0m[0m                ^[0m
+[0m[[0m[31merror[0m] [0m[0mC:\Users\toneydr1\Documents\Spring 2018\COMP 443\Code\Project3\Code\SearchEngine\MainNoActors.scala:1:7: class IndexedPages needs to be abstract, since variable iPages is not defined[0m
+[0m[[0m[31merror[0m] [0m[0m(Note that variables need to be initialized to be defined)[0m
+[0m[[0m[31merror[0m] [0m[0mclass IndexedPages() extends Seq[Page] with Weighted[Page] {[0m
+[0m[[0m[31merror[0m] [0m[0m      ^[0m

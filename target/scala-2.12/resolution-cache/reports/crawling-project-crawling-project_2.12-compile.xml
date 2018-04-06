@@ -7,15 +7,15 @@
 		revision="1.0"
 		conf="compile"
 		confs="compile, runtime, test, provided, optional, compile-internal, runtime-internal, test-internal, plugin, pom, scala-tool"
-		date="20180406171117"/>
+		date="20180406173616"/>
 	<dependencies>
 		<module organisation="org.jsoup" name="jsoup">
-			<revision name="1.9.1" status="release" pubdate="20160416204300" resolver="public" artresolver="public" homepage="http://jsoup.org/" downloaded="true" searched="true" default="false" conf="default, compile, runtime, default(compile), master" position="4">
+			<revision name="1.9.1" status="release" pubdate="20160416204300" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://jsoup.org/" downloaded="false" searched="false" default="false" conf="default, compile, runtime, default(compile), master" position="4">
 				<license name="The MIT License" url="http://jsoup.org/license"/>
-				<metadata-artifact status="successful" details="" size="6477" time="170" location="C:\Users\toneydr1\.ivy2\cache\org.jsoup\jsoup\ivy-1.9.1.xml" searched="true" original-local-location="C:\Users\toneydr1\.ivy2\cache\org.jsoup\jsoup\ivy-1.9.1.xml.original" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/jsoup/jsoup/1.9.1/jsoup-1.9.1.pom"/>
+				<metadata-artifact status="no" details="" size="3127" time="0" location="C:\Users\toneydr1\.ivy2\cache\org.jsoup\jsoup\ivy-1.9.1.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/jsoup/jsoup/1.9.1/jsoup-1.9.1.pom"/>
 				<caller organisation="crawling-project" name="crawling-project_2.12" conf="compile" rev="1.9.1" rev-constraint-default="1.9.1" rev-constraint-dynamic="1.9.1" callerrev="1.0"/>
 				<artifacts>
-					<artifact name="jsoup" type="jar" ext="jar" status="successful" details="" size="319219" time="1805" location="C:\Users\toneydr1\.ivy2\cache\org.jsoup\jsoup\jars\jsoup-1.9.1.jar">
+					<artifact name="jsoup" type="jar" ext="jar" status="no" details="" size="319219" time="0" location="C:\Users\toneydr1\.ivy2\cache\org.jsoup\jsoup\jars\jsoup-1.9.1.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/jsoup/jsoup/1.9.1/jsoup-1.9.1.jar"/>
 					</artifact>
 				</artifacts>
@@ -58,14 +58,14 @@
 			</revision>
 		</module>
 		<module organisation="org.scala-lang" name="scala-library">
-			<revision name="2.12.1" status="release" pubdate="20161205060923" resolver="public" artresolver="public" homepage="http://www.scala-lang.org/" extra-info.apiURL="http://www.scala-lang.org/api/2.12.1/" downloaded="true" searched="true" default="false" conf="default, compile, runtime(*), master(compile), runtime, default(compile), compile(*), master" position="0">
+			<revision name="2.12.1" status="release" pubdate="20161205060923" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.scala-lang.org/" extra-info.apiURL="http://www.scala-lang.org/api/2.12.1/" downloaded="false" searched="false" default="false" conf="default, compile, runtime(*), master(compile), runtime, default(compile), compile(*), master" position="0">
 				<license name="BSD 3-Clause" url="http://www.scala-lang.org/license.html"/>
-				<metadata-artifact status="successful" details="" size="1587" time="485" location="C:\Users\toneydr1\.ivy2\cache\org.scala-lang\scala-library\ivy-2.12.1.xml" searched="true" original-local-location="C:\Users\toneydr1\.ivy2\cache\org.scala-lang\scala-library\ivy-2.12.1.xml.original" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.1/scala-library-2.12.1.pom"/>
+				<metadata-artifact status="no" details="" size="2685" time="0" location="C:\Users\toneydr1\.ivy2\cache\org.scala-lang\scala-library\ivy-2.12.1.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.1/scala-library-2.12.1.pom"/>
 				<caller organisation="crawling-project" name="crawling-project_2.12" conf="compile" rev="2.12.1" rev-constraint-default="2.12.1" rev-constraint-dynamic="2.12.1" callerrev="1.0"/>
 				<caller organisation="org.scala-lang.modules" name="scala-java8-compat_2.12" conf="compile, runtime" rev="2.12.1" rev-constraint-default="2.12.1" rev-constraint-dynamic="2.12.1" callerrev="0.8.0"/>
 				<caller organisation="com.typesafe.akka" name="akka-actor_2.12" conf="default, compile, runtime, master" rev="2.12.1" rev-constraint-default="2.12.1" rev-constraint-dynamic="2.12.1" callerrev="2.4.17"/>
 				<artifacts>
-					<artifact name="scala-library" type="jar" ext="jar" status="successful" details="" size="5272325" time="2002" location="C:\Users\toneydr1\.ivy2\cache\org.scala-lang\scala-library\jars\scala-library-2.12.1.jar">
+					<artifact name="scala-library" type="jar" ext="jar" status="no" details="" size="5272325" time="0" location="C:\Users\toneydr1\.ivy2\cache\org.scala-lang\scala-library\jars\scala-library-2.12.1.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.1/scala-library-2.12.1.jar"/>
 					</artifact>
 				</artifacts>

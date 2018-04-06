@@ -1,0 +1,5 @@
+Fri Apr 06 18:38:38 EDT 2018: 	 class org.jsoup.HttpStatusException: HTTP error fetching URL: http://amazon.com
+Fri Apr 06 18:38:43 EDT 2018: 	 class org.jsoup.HttpStatusException: HTTP error fetching URL: http://reddit.com
+Fri Apr 06 18:38:51 EDT 2018: 	 class org.jsoup.HttpStatusException: HTTP error fetching URL: http://ntd.tv
+Fri Apr 06 18:38:56 EDT 2018: 	 class java.net.SocketTimeoutException: connect timed out: http://microsoftonline.com
+Fri Apr 06 18:39:01 EDT 2018: 	 class java.net.SocketTimeoutException: connect timed out: http://imdb.com
