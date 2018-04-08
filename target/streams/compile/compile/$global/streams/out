@@ -1,4 +1,5 @@
-[0m[[0m[31merror[0m] [0m[0mC:\Users\toneydr1\Documents\Spring 2018\COMP 443\Code\Project3\Code\SearchEngine\MainNoActors.scala:1:7: class IndexedPages needs to be abstract, since variable iPages is not defined[0m
-[0m[[0m[31merror[0m] [0m[0m(Note that variables need to be initialized to be defined)[0m
-[0m[[0m[31merror[0m] [0m[0mclass IndexedPages() extends Seq[Page] with Weighted[Page] {[0m
-[0m[[0m[31merror[0m] [0m[0m      ^[0m
+[0m[[0m[31merror[0m] [0m[0m/Users/student/Desktop/GitHub/SearchEngine/Query.scala:15:3: value s is not a member of Unit[0m
+[0m[[0m[31merror[0m] [0m[0mpossible cause: maybe a semicolon is missing before `value s'?[0m
+[0m[[0m[31merror[0m] [0m[0m	}s[0m
+[0m[[0m[31merror[0m] [0m[0m	 ^[0m
+[0m[[0m[31merror[0m] [0m[0mone error found[0m

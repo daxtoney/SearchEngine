@@ -40,14 +40,14 @@ class IndexedPages() extends Seq[Page] with Weighted[Page] {
     }
 }
 
-class Query(strs: Seq[String]) extends Weighted[String] {
+/*class Query(strs: Seq[String]) extends Weighted[String] {
     def getItems(): Seq[String] = {
         strs
     }
     def getWeights(): Seq[Double] = {
         strs.map(_.length.toDouble)
     }
-}
+}*/
 
 object MainNoActors {
   def main(args: Array[String]) = {
