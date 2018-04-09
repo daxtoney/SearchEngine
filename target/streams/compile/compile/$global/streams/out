@@ -1,5 +1,0 @@
-[0m[[0m[31merror[0m] [0m[0m/Users/student/Desktop/GitHub/SearchEngine/Query.scala:15:3: value s is not a member of Unit[0m
-[0m[[0m[31merror[0m] [0m[0mpossible cause: maybe a semicolon is missing before `value s'?[0m
-[0m[[0m[31merror[0m] [0m[0m	}s[0m
-[0m[[0m[31merror[0m] [0m[0m	 ^[0m
-[0m[[0m[31merror[0m] [0m[0mone error found[0m

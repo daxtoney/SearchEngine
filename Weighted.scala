@@ -5,7 +5,6 @@ trait Weighted[A] {
   
   def sumIf(f: A => Boolean): Double = {
     // TODO: complete this method
-    0.0
-  }
-  
+    list.filter(f(getWeights(_))).foldLeft(0.0)( (x: Double, y: Double) => { x + y } )
+  } 
 }

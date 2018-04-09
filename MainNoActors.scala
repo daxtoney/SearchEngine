@@ -2,6 +2,7 @@ class IndexedPages() extends Seq[Page] with Weighted[Page] {
     var iPages: Seq[Page] = Seq[Page]()
 
     def add(p: Page) = {
+        /*Is this right?*/
         if(!iPages.contains(p)){
             iPages = iPages :+ p
         }
@@ -12,8 +13,23 @@ class IndexedPages() extends Seq[Page] with Weighted[Page] {
     }
 
     def search(qry: Query): SearchResults = {
-        //class SearchResults(val query: Query, val numIndexedPages:Int, val urls: Seq[String], val scores: Seq[Double]) 
+        // How do I use this
         val sch = new SearchResults(qry, 0, iPages.map(_.url), score(iPages))
+
+        // How do I use foldLeft here, I know I need to
+        // Same with the weights, how do I use those here
+        for (p <- iPages) {
+            for (q <- qry) {
+                p.count(getOrElse(q, 0))
+            }
+        }
+
+        /*  
+            TF(t) = (Number of times term t appears in a document) / (Total number of terms in the document)
+            IDF(t) = log_e(Total number of documents / Number of documents with term t in it).
+            Value = TF * IDF
+        */
+
         sch
     }
 
@@ -36,7 +52,7 @@ class IndexedPages() extends Seq[Page] with Weighted[Page] {
         iPages
     }
     def getWeights: Seq[Double] = {
-        iPages.map(_.url.length.toDouble)
+        1.0
     }
 }
 
