@@ -62,10 +62,5 @@ class DictionaryQuery(strs: Seq[String]) extends Query(strs: Seq[String]) {
 		for (s <- strs; if (!goodDictionary.contains(s) && !badDictionary.contains(s))){
 			wordAndWeight :+ (s, 1.0)
 		}
-
-		/*val notCovered = strs.filterNot( _ => goodDictionary.contains(_) && badDictionary.contains(_))
-		for (n <- notCovered){
-			wordAndWeight :+ (n, 1.0)
-		}*/
 	}
 }
