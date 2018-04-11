@@ -1,3 +1,5 @@
+import scala.math._
+
 class IndexedPages() extends Seq[Page] with Weighted[Page] {
     var iPages: Seq[Page] = Seq[Page]()
 
@@ -13,24 +15,37 @@ class IndexedPages() extends Seq[Page] with Weighted[Page] {
     }
 
     def search(qry: Query): SearchResults = {
-        // How do I use this
-        val sch = new SearchResults(qry, 0, iPages.map(_.url), score(iPages))
-
         // How do I use foldLeft here, I know I need to
         // Same with the weights, how do I use those here
-        for (p <- iPages) {
-            for (q <- qry) {
-                p.count(getOrElse(q, 0))
-            }
-        }
+        val scores = for (p <- iPages) yield getScore(qry, p).foldLeft(0.0)(_ + _)
+        //yield for( q <- qry ) yield (tf(q,p,(for (q <- qry) yield p.text.split("\\s+").count(_ == q)).foldLeft(0)((x: Int, y: Int) => { _ + _ } ) )*idf(iPages.length, q))
+
+        val sch = new SearchResults(qry, 0, iPages.map(_.url), scores)
+        sch
 
         /*  
             TF(t) = (Number of times term t appears in a document) / (Total number of terms in the document)
             IDF(t) = log_e(Total number of documents / Number of documents with term t in it).
             Value = TF * IDF
         */
+    }
 
-        sch
+    def getScore(qry: Query, p: Page): Seq[Double] = {
+        val ret = for( q <- qry.getItems ) yield (tf(q, p, totalTerms(qry,p)) * idf(iPages.length, q))
+        ret
+    }
+
+    def totalTerms(qry: Query, p: Page): Int = {
+        val ret = (for (q <- qry.getItems) yield p.text.split("\\s+").count(_ == q)).foldLeft(0)((x: Int, y: Int) => { x + y } )
+        ret
+    }
+
+    def tf(term: String, p: Page, totalTerms: Int): Double = {
+        ( ( p.text.split("\\s+").count(_ == term) * 1.0 ) / ( 1 + totalTerms ) )
+    }
+
+    def idf(docCount: Int, term: String): Double = {
+        log(docCount * 1.0 / ( 1 + iPages.count( _.text.split("\\s+").contains(term) ) ) )
     }
 
     def index_=(ps: Seq[Page]): Unit = {
@@ -52,7 +67,7 @@ class IndexedPages() extends Seq[Page] with Weighted[Page] {
         iPages
     }
     def getWeights: Seq[Double] = {
-        1.0
+        iPages.map((x: Page) => 1.0)
     }
 }
 
