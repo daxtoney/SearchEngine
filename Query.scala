@@ -20,7 +20,7 @@ class DictionaryQuery(strs: Seq[String]) extends Query(strs: Seq[String]) {
 	var badDictionary: Seq[String] = Seq[String]()
 
 	var superWordAndWeight: Seq[(String, Double)] = Seq[(String, Double)]()
-	var wordAndWeight: Seq[(String, Double)] = Seq[(String, Double)]()
+	//var wordAndWeight: Seq[(String, Double)] = Seq[(String, Double)]()
 
 	def loadGood(){
 		val bufferedSource = io.Source.fromFile("Dictionary.csv")

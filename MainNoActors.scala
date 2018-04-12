@@ -5,6 +5,7 @@ class IndexedPages() extends Seq[Page] with Weighted[Page] {
 
     def add(p: Page) = {
         /*Is this right?*/
+        //println(p.url)
         if(!iPages.contains(p)){
             iPages = iPages :+ p
         }
@@ -32,6 +33,10 @@ class IndexedPages() extends Seq[Page] with Weighted[Page] {
 
     def getScore(qry: Query, p: Page): Seq[Double] = {
         val ret = for( q <- qry.getItems ) yield (tf(q, p, totalTerms(qry,p)) * idf(iPages.length, q))
+        //println(ret.toString())
+        if(p.url.contains("apple")) {
+          print(ret)
+        }
         ret
     }
 
@@ -41,6 +46,7 @@ class IndexedPages() extends Seq[Page] with Weighted[Page] {
     }
 
     def tf(term: String, p: Page, totalTerms: Int): Double = {
+        //println("Page URL: " + p.url + " -- Word Count: " + p.text.split("\\s+").count(_ == term) + " -- Total Terms" + totalTerms)
         ( ( p.text.split("\\s+").count(_ == term) * 1.0 ) / ( 1 + totalTerms ) )
     }
 
@@ -69,6 +75,20 @@ class IndexedPages() extends Seq[Page] with Weighted[Page] {
     def getWeights: Seq[Double] = {
         iPages.map((x: Page) => 1.0)
     }
+    def addPageChildren(p: Page): Seq[Page] = {
+        //val pageDoc = Page.getDocument(p.url)
+        val links = Page.getLinks(p.doc)
+        var pageSeq: Seq[Page] = Seq[Page]()
+
+        for (l <- links.take(3)) {
+            val newPage = Page.fetchPage(l)
+            add(newPage.getOrElse(p))
+            pageSeq :+ newPage
+        }
+
+        pageSeq
+    }
+
 }
 
 /*class Query(strs: Seq[String]) extends Weighted[String] {
@@ -88,7 +108,9 @@ object MainNoActors {
     val queries = Vector( Vector("news"),
                           Vector("apple"),
                           Vector("sports", "ncaa"),
-                          Vector("watch", "movies") ).map{ new Query(_) }
+                          Vector("watch", "movies"),
+                          Vector("friend", "help"),
+                          Vector("war", "pain") ).map{ new Query(_) }
                           
     for(q <- queries) {
       val results = index.search(q)
@@ -158,6 +180,9 @@ object MainNoActors {
     // uncomment to see the content of the pages  
     //for(p <- pagesToAdd) {println(p.url); println(p.text); println("\n\n")}
     
-    for(p <- pagesToAdd) index.add(p)
+    for(p <- pagesToAdd) {
+        index.add(p)
+        index.addPageChildren(p)
+    }
   }
 }
