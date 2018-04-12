@@ -31,17 +31,14 @@ class IndexedPages_d4ny() extends IndexedPages {
 
         var weights: Seq[Double] = Seq[Double]()
         //for (p1 <- iPages) yield (iPages.foldLeft(0.0){if (_.links)})
-        for (p <- iPages; p2 <- iPages/*; l <- p2.links*/){
+
+        for (p <- iPages){
             var tempWeight: Double = 1.0
-
-            if (p2.links.contains(p.url)){
-                tempWeight = tempWeight + 1.0
+            for (p2 <- iPages){
+                if (p2.links.contains(p.url)){
+                    tempWeight = tempWeight + 1.0
+                }
             }
-            /*if (p.url.zip(l.dropRight(l.length - p.url.length)).count{case (a,b) => a != b} <= pointMutationsAllowed){
-                tempWeight = tempWeight + 1
-            }*/
-
-
             weights = weights :+ tempWeight
         }
         
