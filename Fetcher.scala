@@ -1,3 +1,4 @@
+import scala.collection.mutable.Queue
 import akka.actor.Actor
 import akka.actor.Props
 import akka.actor.ActorRef
@@ -16,8 +17,7 @@ case class StartCounting(docRoot: String, numActors: Int)*/
 //NEW:
 case class StartCrawling(numActors: Int, pageWeightScheme: Int)
 case class PageToFetch(requestURL: String)
-case class SearchQuery(qry: Query)
-
+//case class SearchQuery(qry: Query)
 
 
 // WordCountWorker receives FileToCount messages,
@@ -30,17 +30,21 @@ case class SearchQuery(qry: Query)
  }*/
 
  class Fetcher extends Actor {
+    var url: String = ""
     //TODO: Implement accordingly
-    /*def fetchPages(requestURL: String) = {
+    def fetchPages(requestURL: String) = {
       //TODO: get the Page based off requestURL
-    }*/
+      Page.fetchPage(requestURL)
+    }
  
  // The abstract method of Actor that we have to implement
  // Use a pattern matching block
  def receive = {
    //NEW
-   case PageToFetch(requestURL: String){
+   case PageToFetch(requestURL: String) => {
     //TODO: Do It
+    url = requestURL
+    sender ! fetchPages(requestURL)
    }
 
 
@@ -63,14 +67,41 @@ case class SearchQuery(qry: Query)
 
 //IndexManager
 class IndexManager extends Actor {
-  var urlsToFetch: Queue[String] = Nil
+  var urlsToFetch: Queue[String] = Queue[String]()
+  var returnedPages: Queue[Page] = Queue[Page]()
+
 
   def receive = {
-    case StartCrawling(numActors: Int, pageWeightScheme: Int){
+    case StartCrawling(numActors: Int, pageWeightScheme: Int) => {
+      
+      val workers = createWorkers(numActors)
 
+      //call prompter, how?
+      //workers(numActors) ! StartPrompting
+
+
+
+      //call rest of workers
+      //urlsToFetch is DYNAMIC -> QUESTION FOR DOCTOR WOLFE?!!!
+      urlsToFetch.zipWithIndex.foreach( pr => {
+           //workers(pr._2 % workers.size) ! PageToFetch(pr._1)
+       })
     }
-    case SearchQuery(qry: Query){
+    /*case SearchQuery(qry: Query) => {
 
+    }*/
+    case q: Query => {
+      //use terms in query to search
+    }
+
+    //The Fetcher returned a page
+    case op: Option[Page] => {
+      var value: Page = op.get
+      value match {
+        //case None => empty()
+        case _ => returnedPages += value
+      }
+      //returnedPages += op.getOrElse()
     }
   }
 
@@ -82,6 +113,10 @@ class IndexManager extends Actor {
    // TODO: complete this with the instructor
      for (i <- 0 until numActors) yield
        context.actorOf(Props[Fetcher], name=s"worker-${i}")
+
+     //Create one prompter
+     context.actorOf(Props[Prompter], name=s"worker-${numActors}")
+
  }
 }
 

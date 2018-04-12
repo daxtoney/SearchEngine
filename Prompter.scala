@@ -2,6 +2,7 @@ import akka.actor.Actor
 import akka.actor.Props
 import akka.actor.ActorRef
 
+//DO WE NEED TO MODIFY THIS?
 class StartPrompting(){
 
 }
@@ -26,6 +27,8 @@ class Prompter extends Actor {
   //   2. use the following line instead of def receive = {
   //def receive = akka.event.LoggingReceive {
   def receive = {
+
+    //WOLFE QUESTION, HOW DO WE CALL START AND WHERE (WHEN WE CREATE THE PROMPTER?)
     case start: StartPrompting => startQuery(sender)
     case res: SearchResults => {
       println("Searched for [" + res.query + "] in " + res.numIndexedPages + " web pages...")
