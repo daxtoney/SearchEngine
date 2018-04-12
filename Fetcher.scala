@@ -3,6 +3,7 @@ import akka.actor.Props
 import akka.actor.ActorRef
 import java.io._
 import scala.io._
+import scala.collection.mutable.Queue
 
 /// Messages to pass
 /// These do not have to be case classes,
@@ -39,8 +40,9 @@ case class SearchQuery(qry: Query)
  // Use a pattern matching block
  def receive = {
    //NEW
-   case PageToFetch(requestURL: String){
+   case PageToFetch(requestURL: String) => {
     //TODO: Do It
+
    }
 
 
@@ -63,13 +65,13 @@ case class SearchQuery(qry: Query)
 
 //IndexManager
 class IndexManager extends Actor {
-  var urlsToFetch: Queue[String] = Nil
+  var urlsToFetch = Queue[String]()
 
   def receive = {
-    case StartCrawling(numActors: Int, pageWeightScheme: Int){
+    case StartCrawling(numActors: Int, pageWeightScheme: Int) => {
 
     }
-    case SearchQuery(qry: Query){
+    case SearchQuery(qry: Query) => {
 
     }
   }

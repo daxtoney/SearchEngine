@@ -66,8 +66,8 @@ class Page(val url: String, val doc: Document, val links: Set[String], val text:
   //   if you want to do your own DOM traversal. Note that those Java collections
   //   can be converted to Scala collections using the .asScala method,
   //   like in Page.getLinks
-  
-  //links.foreach( (l: String) => )
+
+  var splitText: Seq[String] = Seq[String]()
 
   }
 
