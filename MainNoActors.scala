@@ -18,9 +18,13 @@ class IndexedPages() extends Seq[Page] with Weighted[Page] {
         // How do I use foldLeft here, I know I need to
         // Same with the weights, how do I use those here
         val scores = for (p <- iPages) yield getScore(qry, p).foldLeft(0.0)(_ + _)
+
+        val retPWts = scores.zip(getWeights)
+        val actualScores = retPWts.map(x => (x._1 * x._2))
         //yield for( q <- qry ) yield (tf(q,p,(for (q <- qry) yield p.text.split("\\s+").count(_ == q)).foldLeft(0)((x: Int, y: Int) => { _ + _ } ) )*idf(iPages.length, q))
 
-        val sch = new SearchResults(qry, 0, iPages.map(_.url), scores)
+        //val sch = new SearchResults(qry, 0, iPages.map(_.url), scores)
+        val sch = new SearchResults(qry, 0, iPages.map(_.url), actualScores)
         sch
 
         /*  
@@ -32,7 +36,11 @@ class IndexedPages() extends Seq[Page] with Weighted[Page] {
 
     def getScore(qry: Query, p: Page): Seq[Double] = {
         val ret = for( q <- qry.getItems ) yield (tf(q, p, totalTerms(qry,p)) * idf(iPages.length, q))
-        ret
+        val retAWts = ret.zip(qry.getWeights)
+        val ter = retAWts.map(x => (x._1 * x._2))
+
+        //ret
+        ter
     }
 
     def totalTerms(qry: Query, p: Page): Int = {
@@ -82,17 +90,23 @@ class IndexedPages() extends Seq[Page] with Weighted[Page] {
 
 object MainNoActors {
   def main(args: Array[String]) = {
-    val index = new IndexedPages()
+    //val index = new IndexedPages()
+    //val index = new IndexedPages_lu15()
+    val index = new IndexedPages_d4ny()
     addTop50Pages(index)
     
     val queries = Vector( Vector("news"),
                           Vector("apple"),
                           Vector("sports", "ncaa"),
-                          Vector("watch", "movies") ).map{ new Query(_) }
+                          //Vector("watch", "movies") ).map{ new Query(_) }
+                          Vector("watch", "movies") ).map{ new DictionaryQuery(_) }
                           
     for(q <- queries) {
       val results = index.search(q)
       println(q)
+      println(q.getWeights())
+      //println(q.loadBad())
+      //println(q.loadGood())
       results.top(8).foreach{ case (url, score) => printf("%10.4f   %s\n", score, url) }
       println("")
     }
