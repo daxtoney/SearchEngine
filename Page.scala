@@ -33,6 +33,7 @@ object Page{
   def fetchPage(url: String): Option[Page] = {
     try{
         val docOpt = getDocument(url)
+        println(url)
         if(docOpt.isEmpty){
           None
         } else {
