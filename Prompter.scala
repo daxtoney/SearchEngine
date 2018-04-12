@@ -3,7 +3,7 @@ import akka.actor.Props
 import akka.actor.ActorRef
 
 //DO WE NEED TO MODIFY THIS?
-class StartPrompting(){
+case class StartPrompting(){
 
 }
 
