@@ -4,6 +4,7 @@ import akka.actor.Props
 import akka.actor.ActorRef
 import java.io._
 import scala.io._
+import scala.collection.mutable.Queue
 
 /// Messages to pass
 /// These do not have to be case classes,
@@ -30,6 +31,7 @@ case class PageToFetch(requestURL: String)
  }*/
 
  class Fetcher extends Actor {
+
     var url: String = ""
     //TODO: Implement accordingly
     def fetchPages(requestURL: String): Option[Page] = {
@@ -43,45 +45,55 @@ case class PageToFetch(requestURL: String)
  
  // The abstract method of Actor that we have to implement
  // Use a pattern matching block
- def receive = {
+  def receive = {
    //NEW
    case PageToFetch(requestURL: String) => {
     //TODO: Do It
     url = requestURL
     //println("Fetcher is sending the Pages to the Manager")
     sender ! fetchPages(requestURL)
-   }
+  }
 
 
   //For Reference from WordCount.scala
-   // TODO: complete this with the instructor
+  // TODO: complete this with the instructor
      /*case FileToCount(fileName: String) => {
        val count = countWords(fileName)
        sender ! WordCount(fileName, count)
+<<<<<<< HEAD
    }*/
  }
  
- // There are several methods of Actor we can override
- //   for startup/shutdown behavior
- override def postStop(): Unit = {
-   println(s"Worker actor is stopped: ${self}")
-   // NOTE: self is another implicitly available variable for Actors
- }
- 
-}
 
-//IndexManager
-class IndexManager extends Actor {
+
+   // There are several methods of Actor we can override
+   //   for startup/shutdown behavior
+   override def postStop(): Unit = {
+     //println(s"Worker actor is stopped: ${self}")
+     // NOTE: self is another implicitly available variable for Actors
+   }
+
+ }
+
+ //IndexManager
+ class IndexManager extends Actor {
   var urlsToFetch: Queue[String] = Queue[String]()
   var returnedPages: Queue[Page] = Queue[Page]()
   var index = new IndexedPages_lu15()
   
+  def fetchNewLinks() {
+        urlsToFetch.zipWithIndex.foreach( pr => {
+          //println("Manger setting up the orders for workers")
+           workers(pr._2 % workers.size) ! PageToFetch(urlsToFetch.dequeue())
+       })
+        fetchNewLinks()
 
+      }
 
   def receive = {
     case StartCrawling(numActors: Int, pageWeightScheme: Int) => {
     	addTop50Pages()
-      
+
       //Add to IndexPages the 50, then you add stuff to the queue as you remove from it
 
       val workers = createWorkers(numActors)
@@ -96,7 +108,7 @@ class IndexManager extends Actor {
 
       prompter ! StartPrompting()
 
-        //HAVE TO DEQUEUE AND QUEUE CONSTANTLY
+      //HAVE TO DEQUEUE AND QUEUE CONSTANTLY
 
       //call rest of workers
       //urlsToFetch is DYNAMIC -> QUESTION FOR DOCTOR WOLFE?!!!
@@ -108,9 +120,10 @@ class IndexManager extends Actor {
       //}
       
     }
-    /*case SearchQuery(qry: Query) => {
+    //case SearchQuery(qry: Query) => {}
+      
+      
 
-    }*/
     case q: Query => {
       //use terms in query to search
       //println("Received this query: " + q.getItems())
@@ -123,7 +136,6 @@ class IndexManager extends Actor {
       else {
       	var sResults = index.search(q)
       	print(sResults)
-      	println("Trying to send results to Prompter")
       	sender ! sResults
       }
 
@@ -147,25 +159,24 @@ class IndexManager extends Actor {
       }
 
       	//returnedPages += op.getOrElse()
-    }
-  }
+  //returnedPages += op.getOrElse()
+}
+}
 
-  override def postStop(): Unit = {
-   println(s"Master actor is stopped: ${self}")
- }
- 
- private def createWorkers(numActors: Int) = {
-   // TODO: complete this with the instructor
-     for (i <- 0 until numActors) yield
-       context.actorOf(Props[Fetcher], name=s"worker-${i}")
+override def postStop(): Unit = {
+ println(s"Master actor is stopped: ${self}")
+}
 
- }
+private def createWorkers(numActors: Int) = {
+ // TODO: complete this with the instructor
+ for (i <- 0 until numActors) yield
+   context.actorOf(Props[Fetcher], name=s"worker-${i}")
 
 
  def addTop50Pages() = {
-  
-    // from http://www.alexa.com/topsites/countries/US
-    val top50UrlsUsa = Vector(
+
+  // from http://www.alexa.com/topsites/countries/US
+  val top50UrlsUsa = Vector(
     "google.com",
     "youtube.com", 
     "facebook.com",
@@ -216,8 +227,8 @@ class IndexManager extends Actor {
     "instructure.com",
     "foxnews.com",
     "twitch.tv"
-    ).map( (base: String) => "http://" + base )
-	top50UrlsUsa.flatMap{ (u: String) => urlsToFetch += u }
+  ).map( (base: String) => "http://" + base )
+  top50UrlsUsa.flatMap{ (u: String) => urlsToFetch += u }
 }
 }
 

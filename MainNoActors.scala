@@ -11,10 +11,6 @@ class IndexedPages() extends Seq[Page] with Weighted[Page] {
         }
     }
 
-    def score(iPages: Seq[Page]): Seq[Double] = {
-        iPages.map(_.url.length.toDouble)
-    }
-
     def search(qry: Query): SearchResults = {
         // How do I use foldLeft here, I know I need to
         // Same with the weights, how do I use those here
@@ -26,36 +22,39 @@ class IndexedPages() extends Seq[Page] with Weighted[Page] {
 
         //val sch = new SearchResults(qry, 0, iPages.map(_.url), scores)
         val sch = new SearchResults(qry, 0, iPages.map(_.url), actualScores)
+
         sch
 
         /*  
-            TF(t) = (Number of times term t appears in a document) / (Total number of terms in the document)
+            TF(t) = (Number of times term t appears in a document) / (Total number of words in the document)
             IDF(t) = log_e(Total number of documents / Number of documents with term t in it).
             Value = TF * IDF
         */
     }
 
     def getScore(qry: Query, p: Page): Seq[Double] = {
-        val ret = for( q <- qry.getItems ) yield (tf(q, p, totalTerms(qry,p)) * idf(iPages.length, q))
+        p.splitText = p.text.split("\\s+")
+        val ret = for( q <- qry.getItems ) yield (tf(q, p, p.splitText.size) * idf(iPages.length, q))
         val retAWts = ret.zip(qry.getWeights)
         val ter = retAWts.map(x => (x._1 * x._2))
+        //println(p.url)
 
         //ret
         ter
     }
 
     def totalTerms(qry: Query, p: Page): Int = {
-        val ret = (for (q <- qry.getItems) yield p.text.split("\\s+").count(_ == q)).foldLeft(0)((x: Int, y: Int) => { x + y } )
+        val ret = (for (q <- qry.getItems) yield p.splitText.count(_ == q)).foldLeft(0)((x: Int, y: Int) => { x + y } )
         ret
     }
 
     def tf(term: String, p: Page, totalTerms: Int): Double = {
         //println("Page URL: " + p.url + " -- Word Count: " + p.text.split("\\s+").count(_ == term) + " -- Total Terms" + totalTerms)
-        ( ( p.text.split("\\s+").count(_ == term) * 1.0 ) / ( 1 + totalTerms ) )
+        ( ( p.splitText.count(_ == term) * 1.0 ) / ( 1 + totalTerms ) )
     }
 
     def idf(docCount: Int, term: String): Double = {
-        log(docCount * 1.0 / ( 1 + iPages.count( _.text.split("\\s+").contains(term) ) ) )
+        log(docCount * 1.0 / ( 1 + iPages.count( _.splitText.contains(term) ) ) )
     }
 
     def index_=(ps: Seq[Page]): Unit = {
@@ -84,9 +83,9 @@ class IndexedPages() extends Seq[Page] with Weighted[Page] {
         val links = Page.getLinks(p.doc)
         var pageSeq: Seq[Page] = Seq[Page]()
 
-        for (l <- links.take(10)) {
+        for (l <- links.take(4) ) {
             val newPage = Page.fetchPage(l)
-            add(newPage.getOrElse(p))
+            add(Page.fetchPage(l).getOrElse(p))
             pageSeq :+ newPage
         }
 
@@ -104,16 +103,26 @@ class IndexedPages() extends Seq[Page] with Weighted[Page] {
     }
 }*/
 
+/*case q: Query => {
+    val terms = q.terms
+    if(terms.soze == 0){
+        context.system.terminate
+    }else{
+        val results = IndexedPages.search(q)
+        sender ! results
+    }
+}*/
+
 object MainNoActors {
   def main(args: Array[String]) = {
     //val index = new IndexedPages()
     //val index = new IndexedPages_lu15()
-    val index = new IndexedPages_d4ny()
+    val index = new IndexedPages_lu15()
     addTop50Pages(index)
     
-    val queries = Vector( //Vector("news"),
-                          //Vector("apple"),
-                          //Vector("sports", "ncaa"),
+    val queries = Vector( Vector("news"),
+                          Vector("apple"),
+                          Vector("sports", "ncaa"),
                           //Vector("watch", "movies"),
                           Vector("friend", "love"),
                           //Vector("watch", "movies") ).map{ new Query(_) }
@@ -182,8 +191,8 @@ object MainNoActors {
     "zillow.com",
     "microsoft.com",
     "instructure.com",
-    "foxnews.com"//,
-    //"twitch.tv"
+    "foxnews.com",
+    "twitch.tv"
     ).map( (base: String) => "http://" + base )
     
     val pagesToAdd = top50UrlsUsa.flatMap{ (u: String) => Page.fetchPage(u) }
@@ -193,7 +202,7 @@ object MainNoActors {
     
     for(p <- pagesToAdd) {
         index.add(p)
-        index.addPageChildren(p)
+        index.addPageChildren(p) // Crawl 1 level 
     }
   }
 }
