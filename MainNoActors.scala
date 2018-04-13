@@ -132,8 +132,6 @@ object MainNoActors {
       val results = index.search(q)
       println(q)
       println(q.getWeights())
-      //println(q.loadBad())
-      //println(q.loadGood())
       results.top(8).foreach{ case (url, score) => printf("%10.4f   %s\n", score, url) }
       println("")
     }

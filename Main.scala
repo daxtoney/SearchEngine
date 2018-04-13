@@ -8,10 +8,8 @@ object Main {
     // TODO: complete this method
     val system = ActorSystem("search-engine-system")
     val m = system.actorOf(Props[IndexManager], name = "Master")
-    m ! StartCrawling(3, 1)
-    println("done with main")
-    //TODO: Implement
-    //val m = system.actorOf()     
+    m ! StartCrawling(3)
+    println("done with main") 
   }
   
 }

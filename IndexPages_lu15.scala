@@ -8,13 +8,8 @@ class IndexedPages_lu15() extends IndexedPages {
         val pattern = new Regex("[/]")
         //val score: Double = 5.0 - (pattern findAllIn p.url).length
         val ret = for(p <- iPages) yield (getMax(1.0, 5.0 - (pattern findAllIn p.url).length))
-
-        /*for (r <- ret){
-            println(r)
-        }*/
-
+            
         ret
-        //iPages.map((x: Page) => 1.0)
     }
     
     def getMax(x: Double, y: Double): Double = {
