@@ -32,10 +32,13 @@ case class PageToFetch(requestURL: String)
  class Fetcher extends Actor {
     var url: String = ""
     //TODO: Implement accordingly
-    def fetchPages(requestURL: String) = {
+    def fetchPages(requestURL: String): Option[Page] = {
       //TODO: get the Page based off requestURL
-      println(requestURL)
-      Page.fetchPage(requestURL)
+      //println(requestURL)
+
+      val p = Page.fetchPage(requestURL)
+      //println(p.get)
+      p
     }
  
  // The abstract method of Actor that we have to implement
@@ -61,7 +64,7 @@ case class PageToFetch(requestURL: String)
  // There are several methods of Actor we can override
  //   for startup/shutdown behavior
  override def postStop(): Unit = {
-   //println(s"Worker actor is stopped: ${self}")
+   println(s"Worker actor is stopped: ${self}")
    // NOTE: self is another implicitly available variable for Actors
  }
  
@@ -71,7 +74,7 @@ case class PageToFetch(requestURL: String)
 class IndexManager extends Actor {
   var urlsToFetch: Queue[String] = Queue[String]()
   var returnedPages: Queue[Page] = Queue[Page]()
-  var index = new IndexedPages()
+  var index = new IndexedPages_lu15()
   
 
 
@@ -89,7 +92,7 @@ class IndexManager extends Actor {
 
       
       //prompter ! StartPrompting
-      //println("Manager is trying to wake up prompter")
+      println("Manager is trying to wake up prompter")
 
       prompter ! StartPrompting()
 
@@ -97,24 +100,30 @@ class IndexManager extends Actor {
 
       //call rest of workers
       //urlsToFetch is DYNAMIC -> QUESTION FOR DOCTOR WOLFE?!!!
-
-      urlsToFetch.zipWithIndex.foreach( pr => {
+      //while (true){
+      	urlsToFetch.zipWithIndex.foreach( pr => {
       		//println("Manger setting up the orders for workers")
-           workers(pr._2 % workers.size) ! PageToFetch(urlsToFetch.dequeue())
+           workers(pr._2 % workers.size) ! PageToFetch(pr._1)
        })
+      //}
+      
     }
     /*case SearchQuery(qry: Query) => {
 
     }*/
     case q: Query => {
       //use terms in query to search
+      //println("Received this query: " + q.getItems())
       val terms = q.getItems()
+      //println(terms)
       if (terms.size < 1){
+      	println("Terminating the system")
       	context.system.terminate()
       }
       else {
       	var sResults = index.search(q)
-      	//println("Trying to send results to Prompter")
+      	print(sResults)
+      	println("Trying to send results to Prompter")
       	sender ! sResults
       }
 
@@ -125,13 +134,18 @@ class IndexManager extends Actor {
     //The Fetcher returned a page
     case op: Option[Page] => {
       if (op != None){
+      	//print("Received page: " + op.get.url)
+      	//val workers = createWorkers(numActors)
+
       	for (l <- op.get.links.take(5)){
       		urlsToFetch += l
       	}
-      	println("added - url " + op.get.url)
+
+      	//println("added - url " + op.get.url)
       	index.add(op.get)
       	//returnedPages += op.get
       }
+
       	//returnedPages += op.getOrElse()
     }
   }
@@ -146,6 +160,7 @@ class IndexManager extends Actor {
        context.actorOf(Props[Fetcher], name=s"worker-${i}")
 
  }
+
 
  def addTop50Pages() = {
   

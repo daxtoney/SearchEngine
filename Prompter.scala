@@ -4,7 +4,7 @@ import akka.actor.ActorRef
 
 //DO WE NEED TO MODIFY THIS?
 case class StartPrompting(){
-
+  println("Started Prompting")
 }
 
 class Prompter extends Actor {
@@ -15,7 +15,7 @@ class Prompter extends Actor {
       val q = scala.io.StdIn.readLine("Enter a query: ")
       
       // Make the query
-      val qObj = new Query(if(q.trim.length == 0) Nil else q.trim.split("(_|\\W)+").map(_.toLowerCase))
+      val qObj = new DictionaryQuery(if(q.trim.length == 0) Nil else q.trim.split("(_|\\W)+").map(_.toLowerCase))
       
       // Send to the manager
       mgr ! qObj
@@ -27,6 +27,7 @@ class Prompter extends Actor {
   //   2. use the following line instead of def receive = {
   //def receive = akka.event.LoggingReceive {
   def receive = {
+    //println("Prompter is awake")
 
     //WOLFE QUESTION, HOW DO WE CALL START AND WHERE (WHEN WE CREATE THE PROMPTER?)
     case start: StartPrompting => startQuery(sender)
