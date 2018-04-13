@@ -22,6 +22,7 @@ class IndexedPages() extends Seq[Page] with Weighted[Page] {
 
         //val sch = new SearchResults(qry, 0, iPages.map(_.url), scores)
         val sch = new SearchResults(qry, 0, iPages.map(_.url), actualScores)
+
         sch
 
         /*  
@@ -102,7 +103,7 @@ class IndexedPages() extends Seq[Page] with Weighted[Page] {
     }
 }*/
 
-case q: Query => {
+/*case q: Query => {
     val terms = q.terms
     if(terms.soze == 0){
         context.system.terminate
@@ -110,7 +111,7 @@ case q: Query => {
         val results = IndexedPages.search(q)
         sender ! results
     }
-}
+}*/
 
 object MainNoActors {
   def main(args: Array[String]) = {

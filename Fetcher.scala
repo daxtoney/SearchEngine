@@ -31,45 +31,46 @@ case class PageToFetch(requestURL: String)
  }*/
 
  class Fetcher extends Actor {
-    var url: String = ""
-    //TODO: Implement accordingly
-    def fetchPages(requestURL: String) = {
-      //TODO: get the Page based off requestURL
-      println(requestURL)
-      Page.fetchPage(requestURL)
-    }
- 
- // The abstract method of Actor that we have to implement
- // Use a pattern matching block
- def receive = {
+  var url: String = ""
+  //TODO: Implement accordingly
+  def fetchPages(requestURL: String) = {
+    //TODO: get the Page based off requestURL
+    println(requestURL)
+    Page.fetchPage(requestURL)
+
+  }
+
+  // The abstract method of Actor that we have to implement
+  // Use a pattern matching block
+  def receive = {
    //NEW
    case PageToFetch(requestURL: String) => {
     //TODO: Do It
     url = requestURL
     //println("Fetcher is sending the Pages to the Manager")
     sender ! fetchPages(requestURL)
-   }
+  }
 
 
   //For Reference from WordCount.scala
-   // TODO: complete this with the instructor
+  // TODO: complete this with the instructor
      /*case FileToCount(fileName: String) => {
        val count = countWords(fileName)
        sender ! WordCount(fileName, count)
-   }*/
- }
- 
- // There are several methods of Actor we can override
- //   for startup/shutdown behavior
- override def postStop(): Unit = {
-   //println(s"Worker actor is stopped: ${self}")
-   // NOTE: self is another implicitly available variable for Actors
- }
- 
-}
+     }*/
+   }
 
-//IndexManager
-class IndexManager extends Actor {
+   // There are several methods of Actor we can override
+   //   for startup/shutdown behavior
+   override def postStop(): Unit = {
+     //println(s"Worker actor is stopped: ${self}")
+     // NOTE: self is another implicitly available variable for Actors
+   }
+
+ }
+
+ //IndexManager
+ class IndexManager extends Actor {
   var urlsToFetch: Queue[String] = Queue[String]()
   var returnedPages: Queue[Page] = Queue[Page]()
   var index = new IndexedPages()
@@ -79,7 +80,7 @@ class IndexManager extends Actor {
   def receive = {
     case StartCrawling(numActors: Int, pageWeightScheme: Int) => {
     	addTop50Pages()
-      
+
       //Add to IndexPages the 50, then you add stuff to the queue as you remove from it
 
       val workers = createWorkers(numActors)
@@ -94,19 +95,22 @@ class IndexManager extends Actor {
 
       prompter ! StartPrompting()
 
-        //HAVE TO DEQUEUE AND QUEUE CONSTANTLY
+      //HAVE TO DEQUEUE AND QUEUE CONSTANTLY
 
       //call rest of workers
       //urlsToFetch is DYNAMIC -> QUESTION FOR DOCTOR WOLFE?!!!
 
-      urlsToFetch.zipWithIndex.foreach( pr => {
-      		//println("Manger setting up the orders for workers")
+      
+      def fetchNewLinks() {
+        urlsToFetch.zipWithIndex.foreach( pr => {
+          //println("Manger setting up the orders for workers")
            workers(pr._2 % workers.size) ! PageToFetch(urlsToFetch.dequeue())
        })
-    }
-    /*case SearchQuery(qry: Query) => {
+        fetchNewLinks()
 
-    }*/
+      }
+
+
     case q: Query => {
       //use terms in query to search
       val terms = q.getItems()
@@ -115,7 +119,7 @@ class IndexManager extends Actor {
       }
       else {
       	var sResults = index.search(q)
-      	//println("Trying to send results to Prompter")
+      	// println("Trying to send results to Prompter")
       	sender ! sResults
       }
 
@@ -123,35 +127,36 @@ class IndexManager extends Actor {
 
     }
 
-    //The Fetcher returned a page
-    case op: Option[Page] => {
-      if (op != None){
-      	for (l <- op.get.links.take(5)){
-      		urlsToFetch += l
-      	}
-      	println("added - url " + op.get.url)
-      	index.add(op.get)
-      	//returnedPages += op.get
-      }
-      	//returnedPages += op.getOrElse()
+  //The Fetcher returned a page
+  case op: Option[Page] => {
+    if (op != None){
+     for (l <- op.get.links.take(5)){
+      urlsToFetch += l
     }
+    //println("urlsToFetch " + urlsToFetch)
+    fetchNewLinks
+    index.add(op.get)
+    //returnedPages += op.get
   }
+  //returnedPages += op.getOrElse()
+}
+}
 
-  override def postStop(): Unit = {
-   println(s"Master actor is stopped: ${self}")
- }
- 
- private def createWorkers(numActors: Int) = {
-   // TODO: complete this with the instructor
-     for (i <- 0 until numActors) yield
-       context.actorOf(Props[Fetcher], name=s"worker-${i}")
+override def postStop(): Unit = {
+ println(s"Master actor is stopped: ${self}")
+}
 
- }
+private def createWorkers(numActors: Int) = {
+ // TODO: complete this with the instructor
+ for (i <- 0 until numActors) yield
+   context.actorOf(Props[Fetcher], name=s"worker-${i}")
 
- def addTop50Pages() = {
-  
-    // from http://www.alexa.com/topsites/countries/US
-    val top50UrlsUsa = Vector(
+}
+
+def addTop50Pages() = {
+
+  // from http://www.alexa.com/topsites/countries/US
+  val top50UrlsUsa = Vector(
     "google.com",
     "youtube.com", 
     "facebook.com",
@@ -202,8 +207,8 @@ class IndexManager extends Actor {
     "instructure.com",
     "foxnews.com",
     "twitch.tv"
-    ).map( (base: String) => "http://" + base )
-	top50UrlsUsa.flatMap{ (u: String) => urlsToFetch += u }
+  ).map( (base: String) => "http://" + base )
+  top50UrlsUsa.flatMap{ (u: String) => urlsToFetch += u }
 }
 }
 

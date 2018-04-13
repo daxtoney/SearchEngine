@@ -99,3 +99,37 @@ Thu Apr 12 15:38:21 PDT 2018: 	 class java.net.SocketTimeoutException: connect t
 Thu Apr 12 15:40:34 PDT 2018: 	 class org.jsoup.HttpStatusException: HTTP error fetching URL: http://amazon.com
 Thu Apr 12 15:40:36 PDT 2018: 	 class org.jsoup.HttpStatusException: HTTP error fetching URL: http://reddit.com
 Thu Apr 12 15:40:37 PDT 2018: 	 class java.net.SocketTimeoutException: connect timed out: http://microsoftonline.com
+Thu Apr 12 21:25:23 EDT 2018: 	 class org.jsoup.HttpStatusException: HTTP error fetching URL: http://amazon.com
+Thu Apr 12 21:25:24 EDT 2018: 	 class org.jsoup.HttpStatusException: HTTP error fetching URL: http://ntd.tv
+Thu Apr 12 21:25:25 EDT 2018: 	 class org.jsoup.HttpStatusException: HTTP error fetching URL: http://reddit.com
+Thu Apr 12 21:25:26 EDT 2018: 	 class java.net.SocketTimeoutException: connect timed out: http://microsoftonline.com
+Thu Apr 12 21:25:27 EDT 2018: 	 class java.net.SocketTimeoutException: Read timed out: http://wellsfargo.com
+Thu Apr 12 21:33:04 EDT 2018: 	 class org.jsoup.HttpStatusException: HTTP error fetching URL: http://amazon.com
+Thu Apr 12 21:33:04 EDT 2018: 	 class org.jsoup.HttpStatusException: HTTP error fetching URL: http://ntd.tv
+Thu Apr 12 21:33:06 EDT 2018: 	 class java.net.SocketTimeoutException: Read timed out: http://reddit.com
+Thu Apr 12 21:33:06 EDT 2018: 	 class java.net.SocketTimeoutException: connect timed out: http://microsoftonline.com
+Thu Apr 12 21:33:07 EDT 2018: 	 class org.jsoup.HttpStatusException: HTTP error fetching URL: http://huffingtonpost.com
+Thu Apr 12 21:37:00 EDT 2018: 	 class org.jsoup.HttpStatusException: HTTP error fetching URL: http://amazon.com
+Thu Apr 12 21:37:00 EDT 2018: 	 class org.jsoup.HttpStatusException: HTTP error fetching URL: http://ntd.tv
+Thu Apr 12 21:37:03 EDT 2018: 	 class java.net.SocketTimeoutException: Read timed out: http://reddit.com
+Thu Apr 12 21:37:03 EDT 2018: 	 class java.net.SocketTimeoutException: connect timed out: http://microsoftonline.com
+Thu Apr 12 21:42:45 EDT 2018: 	 class org.jsoup.HttpStatusException: HTTP error fetching URL: http://amazon.com
+Thu Apr 12 21:42:46 EDT 2018: 	 class org.jsoup.HttpStatusException: HTTP error fetching URL: http://ntd.tv
+Thu Apr 12 21:42:47 EDT 2018: 	 class java.net.SocketTimeoutException: Read timed out: http://reddit.com
+Thu Apr 12 21:42:47 EDT 2018: 	 class java.net.SocketTimeoutException: connect timed out: http://microsoftonline.com
+Thu Apr 12 21:56:57 EDT 2018: 	 class org.jsoup.HttpStatusException: HTTP error fetching URL: http://amazon.com
+Thu Apr 12 21:56:58 EDT 2018: 	 class org.jsoup.HttpStatusException: HTTP error fetching URL: http://ntd.tv
+Thu Apr 12 21:57:00 EDT 2018: 	 class java.net.SocketTimeoutException: Read timed out: http://reddit.com
+Thu Apr 12 21:57:00 EDT 2018: 	 class java.net.SocketTimeoutException: connect timed out: http://microsoftonline.com
+Thu Apr 12 21:58:45 EDT 2018: 	 class org.jsoup.HttpStatusException: HTTP error fetching URL: http://reddit.com
+Thu Apr 12 21:58:46 EDT 2018: 	 class org.jsoup.HttpStatusException: HTTP error fetching URL: http://amazon.com
+Thu Apr 12 21:58:46 EDT 2018: 	 class org.jsoup.HttpStatusException: HTTP error fetching URL: http://ntd.tv
+Thu Apr 12 21:58:49 EDT 2018: 	 class java.net.SocketTimeoutException: connect timed out: http://microsoftonline.com
+Thu Apr 12 22:01:29 EDT 2018: 	 class org.jsoup.HttpStatusException: HTTP error fetching URL: http://amazon.com
+Thu Apr 12 22:01:29 EDT 2018: 	 class org.jsoup.HttpStatusException: HTTP error fetching URL: http://ntd.tv
+Thu Apr 12 22:01:31 EDT 2018: 	 class org.jsoup.HttpStatusException: HTTP error fetching URL: http://reddit.com
+Thu Apr 12 22:01:32 EDT 2018: 	 class java.net.SocketTimeoutException: connect timed out: http://microsoftonline.com
+Thu Apr 12 22:12:51 EDT 2018: 	 class org.jsoup.HttpStatusException: HTTP error fetching URL: http://amazon.com
+Thu Apr 12 22:12:51 EDT 2018: 	 class org.jsoup.HttpStatusException: HTTP error fetching URL: http://ntd.tv
+Thu Apr 12 22:12:54 EDT 2018: 	 class java.net.SocketTimeoutException: Read timed out: http://reddit.com
+Thu Apr 12 22:12:54 EDT 2018: 	 class java.net.SocketTimeoutException: connect timed out: http://microsoftonline.com
